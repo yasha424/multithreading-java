@@ -1,12 +1,13 @@
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Random;
 import java.awt.geom.Ellipse2D;
 
 class Ball {
     private Component canvas;
 
-    private static final int XSIZE = 20;
-    private static final int YSIZE = 20;
+    private static final int X_SIZE = 20;
+    private static final int Y_SIZE = 20;
 
     private int x = 0;
     private int y = 0;
@@ -31,7 +32,7 @@ class Ball {
 
     public void draw(Graphics2D g2) {
         g2.setColor(Color.darkGray);
-        g2.fill(new Ellipse2D.Double(x,y,XSIZE,YSIZE));
+        g2.fill(new Ellipse2D.Double(x, y, X_SIZE, Y_SIZE));
     }
 
     public void move() {
@@ -43,8 +44,8 @@ class Ball {
             dx = -dx;
         }
 
-        if (x + XSIZE >= this.canvas.getWidth()) {
-            x = this.canvas.getWidth() - XSIZE;
+        if (x + X_SIZE >= this.canvas.getWidth()) {
+            x = this.canvas.getWidth() - X_SIZE;
             dx = -dx;
         }
 
@@ -53,8 +54,8 @@ class Ball {
             dy = -dy;
         }
 
-        if (y + YSIZE >= this.canvas.getHeight()) {
-            y = this.canvas.getHeight() - YSIZE;
+        if (y + Y_SIZE >= this.canvas.getHeight()) {
+            y = this.canvas.getHeight() - Y_SIZE;
             dy = -dy;
         }
         repaintCanvas();
@@ -63,4 +64,32 @@ class Ball {
     public void repaintCanvas() {
         this.canvas.repaint();
     }
+
+    public boolean interactsWithHole() {
+        ArrayList<Hole> holes = BallCanvas.getHoles();
+
+        for (int i = 0; i < holes.size(); i++) {
+            if (interactsWithHole(holes.get(i))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean interactsWithHole(Hole hole) {
+        double centerX1 = this.x + this.Y_SIZE / 2;
+        double centerY1 = this.y + this.X_SIZE / 2;
+        double centerX2 = hole.getX() + hole.Y_SIZE / 2;
+        double centerY2 = hole.getY() + hole.X_SIZE / 2;
+        double radius1 = this.Y_SIZE / 2;
+        double radius2 = hole.Y_SIZE / 2;
+
+        double distanceBetweenCenters = Math.sqrt((centerX1 - centerX2)
+                                        * (centerX1 - centerX2) + (centerY1 - centerY2)
+                                        * (centerY1 - centerY2));
+
+        return distanceBetweenCenters <= (radius1 + radius2);
+    }
+
 }
