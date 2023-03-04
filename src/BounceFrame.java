@@ -1,15 +1,15 @@
 import javax.swing.*;
 import java.awt.*;
-//import java.awt.event.ActionListener;
-//import java.awt.event.ActionEvent;
+import java.util.Random;
+import java.lang.Thread;
 
 public class BounceFrame extends JFrame {
     static int ballsInHolesCounter = 0;
 
     private BallCanvas canvas;
 
-    public static final int WIDTH = 450;
-    public static final int HEIGHT = 350;
+    public static final int WIDTH = 900;
+    public static final int HEIGHT = 400;
 
     static private JLabel counterLabel;
 
@@ -32,6 +32,10 @@ public class BounceFrame extends JFrame {
 
         JButton buttonStart = new JButton("Start");
         JButton buttonStop = new JButton("Stop");
+        JButton buttonAddRed = new JButton("Add Red");
+        JButton buttonAddBlue = new JButton("Add Blue");
+        JButton buttonAddMany = new JButton("Add many");
+        JButton buttonJoinThread = new JButton("Join Thread");
 
         buttonStart.addActionListener(e -> {
             Ball b = new Ball(canvas);
@@ -44,9 +48,78 @@ public class BounceFrame extends JFrame {
 
         buttonStop.addActionListener(e -> System.exit(0));
 
+        buttonAddRed.addActionListener(e -> {
+            Ball b = new Ball(canvas);
+            b.setColor(Color.red);
+            canvas.add(b);
+            BallThread thread = new BallThread(b);
+            thread.setPriority(Thread.MAX_PRIORITY);
+            thread.start();
+            System.out.println("Thread name = " +
+                    thread.getName());
+        });
+
+        buttonAddBlue.addActionListener(e -> {
+            Ball b = new Ball(canvas);
+            b.setColor(Color.blue);
+            canvas.add(b);
+            BallThread thread = new BallThread(b);
+            thread.setPriority(Thread.MIN_PRIORITY);
+            thread.start();
+            System.out.println("Thread name = " +
+                    thread.getName());
+        });
+
+        buttonAddMany.addActionListener(e -> {
+
+            int x = new Random().nextInt(this.canvas.getWidth());
+            int y = new Random().nextInt(this.canvas.getHeight());
+
+            for (int i = 0; i < 600; i++) {
+                Ball b = new Ball(canvas, x, y);
+                b.setColor(Color.blue);
+                canvas.add(b);
+                BallThread thread = new BallThread(b);
+                thread.setPriority(Thread.MIN_PRIORITY);
+                thread.start();
+//                System.out.println(thread.getPriority());
+//                System.out.println("Thread name = " +
+//                        thread.getName());
+            }
+
+            Ball b = new Ball(canvas, x, y);
+            b.setColor(Color.red);
+            canvas.add(b);
+            BallThread thread = new BallThread(b);
+            thread.setPriority(Thread.MAX_PRIORITY);
+            thread.start();
+//            System.out.println(thread.getPriority());
+//            System.out.println("Thread name = " +
+//                    thread.getName());
+        });
+
+        buttonJoinThread.addActionListener(e -> {
+            Ball b1 = new Ball(canvas);
+            b1.setColor(Color.black);
+            canvas.add(b1);
+            BallThread thread1 = new BallThread(b1);
+
+            Ball b2 = new Ball(canvas);
+            b2.setColor(Color.black);
+            canvas.add(b2);
+            BallThread thread2 = new JoinBallThread(b2, thread1);
+
+            thread1.start();
+            thread2.start();
+        });
+
         buttonPanel.add(this.counterLabel);
         buttonPanel.add(buttonStart);
         buttonPanel.add(buttonStop);
+        buttonPanel.add(buttonAddRed);
+        buttonPanel.add(buttonAddBlue);
+        buttonPanel.add(buttonAddMany);
+        buttonPanel.add(buttonJoinThread);
         content.add(buttonPanel, BorderLayout.SOUTH);
     }
 

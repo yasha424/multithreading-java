@@ -14,6 +14,8 @@ class Ball {
     private int dx = 2;
     private int dy = 2;
 
+    private Color color = Color.darkGray;
+
     public Ball(Component c) {
         this.canvas = c;
 
@@ -26,12 +28,24 @@ class Ball {
         }
     }
 
+    public Ball(Component c, int x, int y) {
+        this.canvas = c;
+
+        this.x = x;
+        this.y = y;
+    }
+
+
     public static void f() {
         int a = 0;
     }
 
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
     public void draw(Graphics2D g2) {
-        g2.setColor(Color.darkGray);
+        g2.setColor(this.color);
         g2.fill(new Ellipse2D.Double(x, y, X_SIZE, Y_SIZE));
     }
 

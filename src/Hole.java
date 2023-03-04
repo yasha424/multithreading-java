@@ -25,7 +25,7 @@ public class Hole {
     }
 
     public void draw(Graphics2D g2){
-        g2.setColor(Color.red);
+        g2.setColor(Color.green);
         g2.fill(new Ellipse2D.Double(x, y, X_SIZE, Y_SIZE));
 
     }
