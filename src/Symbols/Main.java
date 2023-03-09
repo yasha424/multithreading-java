@@ -2,17 +2,17 @@ package Symbols;
 
 import Symbols.Printer.Printer;
 import Symbols.Printer.PrinterThread;
+import Symbols.Syncer.Syncer;
 
 public class Main {
     public static void main(String[] args) {
         Printer p1 = new Printer('-');
         Printer p2 = new Printer('|');
 
-        PrinterThread pt1 = new PrinterThread(p1);
-        PrinterThread pt2 = new PrinterThread(p2);
+        Syncer syncer = new Syncer(true);
 
-//        pt1.setPriority(10);
-//        pt2.setPriority(1);
+        PrinterThread pt1 = new PrinterThread(p1, syncer, true);
+        PrinterThread pt2 = new PrinterThread(p2, syncer, false);
 
         pt1.start();
         pt2.start();

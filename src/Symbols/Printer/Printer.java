@@ -7,7 +7,7 @@ public class Printer {
         this.symbol = symbol;
     }
 
-    public void print() {
+    public synchronized void print() {
         System.out.print(symbol);
     }
 }
