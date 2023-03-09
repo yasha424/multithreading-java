@@ -1,3 +1,7 @@
+package Bounce;
+
+import Bounce.Views.BounceFrame;
+
 import javax.swing.*;
 
 public class Bounce {

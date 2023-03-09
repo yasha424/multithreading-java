@@ -1,3 +1,7 @@
+package Bounce.Threads;
+
+import Bounce.Objects.Ball;
+
 public class JoinBallThread extends BallThread {
     private BallThread parentThread;
 

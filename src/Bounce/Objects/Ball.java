@@ -1,9 +1,13 @@
+package Bounce.Objects;
+
+import Bounce.Views.BallCanvas;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 import java.awt.geom.Ellipse2D;
 
-class Ball {
+public class Ball {
     private Component canvas;
 
     private static final int X_SIZE = 20;

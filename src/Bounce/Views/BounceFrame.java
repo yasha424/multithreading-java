@@ -1,10 +1,17 @@
+package Bounce.Views;
+
+import Bounce.Objects.Ball;
+import Bounce.Objects.Hole;
+import Bounce.Threads.BallThread;
+import Bounce.Threads.JoinBallThread;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 import java.lang.Thread;
 
 public class BounceFrame extends JFrame {
-    static int ballsInHolesCounter = 0;
+    public static int ballsInHolesCounter = 0;
 
     private BallCanvas canvas;
 
@@ -82,9 +89,6 @@ public class BounceFrame extends JFrame {
                 BallThread thread = new BallThread(b);
                 thread.setPriority(Thread.MIN_PRIORITY);
                 thread.start();
-//                System.out.println(thread.getPriority());
-//                System.out.println("Thread name = " +
-//                        thread.getName());
             }
 
             Ball b = new Ball(canvas, x, y);
@@ -93,9 +97,6 @@ public class BounceFrame extends JFrame {
             BallThread thread = new BallThread(b);
             thread.setPriority(Thread.MAX_PRIORITY);
             thread.start();
-//            System.out.println(thread.getPriority());
-//            System.out.println("Thread name = " +
-//                    thread.getName());
         });
 
         buttonJoinThread.addActionListener(e -> {

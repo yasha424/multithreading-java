@@ -1,10 +1,15 @@
+package Bounce.Views;
+
+import Bounce.Objects.Ball;
+import Bounce.Objects.Hole;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
 public class BallCanvas extends JPanel {
     static private ArrayList<Ball> balls = new ArrayList<>();
-    static private ArrayList<Hole> holes = new ArrayList<>();
+    static private ArrayList<Hole> holes = new ArrayList<Hole>();
 
     public void add(Ball b) {
         this.balls.add(b);
