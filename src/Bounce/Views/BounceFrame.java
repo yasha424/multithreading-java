@@ -11,7 +11,7 @@ import java.util.Random;
 import java.lang.Thread;
 
 public class BounceFrame extends JFrame {
-    public static int ballsInHolesCounter = 0;
+    private static int ballsInHolesCounter = 0;
 
     private BallCanvas canvas;
 
@@ -20,10 +20,15 @@ public class BounceFrame extends JFrame {
 
     static private JLabel counterLabel;
 
+    static synchronized public void incrementBallsInHolesCounter() {
+        ballsInHolesCounter++;
+    }
+
     public BounceFrame() {
         this.setSize(WIDTH, HEIGHT);
         this.setTitle("Bounce programm");
         this.canvas = new BallCanvas();
+        this.canvas.setBackground(Color.green);
 
         System.out.println("In Frame Thread name = " + Thread.currentThread().getName());
 
@@ -33,7 +38,13 @@ public class BounceFrame extends JFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(Color.lightGray);
 
-        canvas.add(new Hole(canvas, 10, 10));
+        canvas.add(new Hole(canvas, 0 - Hole.X_SIZE / 2, 0 - Hole.Y_SIZE / 2));
+        canvas.add(new Hole(canvas,  WIDTH / 2 - Hole.X_SIZE / 2, 0 - Hole.Y_SIZE / 2));
+        canvas.add(new Hole(canvas, WIDTH - Hole.X_SIZE / 2, 0 - Hole.Y_SIZE / 2));
+        canvas.add(new Hole(canvas, 0 - Hole.X_SIZE / 2, HEIGHT - Hole.Y_SIZE / 2 - 65));
+        canvas.add(new Hole(canvas,  WIDTH / 2 - Hole.X_SIZE / 2, HEIGHT - Hole.Y_SIZE / 2 - 65));
+        canvas.add(new Hole(canvas, WIDTH - Hole.X_SIZE / 2, HEIGHT - Hole.Y_SIZE / 2 - 65));
+
 
         this.counterLabel = new JLabel("Balls in holes: " + ballsInHolesCounter);
 
@@ -49,8 +60,7 @@ public class BounceFrame extends JFrame {
             canvas.add(b);
             BallThread thread = new BallThread(b);
             thread.start();
-            System.out.println("Thread name = " +
-                    thread.getName());
+            System.out.println("Thread name = " + thread.getName());
         });
 
         buttonStop.addActionListener(e -> System.exit(0));
@@ -82,13 +92,17 @@ public class BounceFrame extends JFrame {
             int x = new Random().nextInt(this.canvas.getWidth());
             int y = new Random().nextInt(this.canvas.getHeight());
 
-            for (int i = 0; i < 600; i++) {
+            int size = 400;
+            BallThread threads[] = new BallThread[size + 1];
+
+            for (int i = 0; i < size; i++) {
                 Ball b = new Ball(canvas, x, y);
-                b.setColor(Color.blue);
+//                b.setColor(Color.blue);
                 canvas.add(b);
                 BallThread thread = new BallThread(b);
                 thread.setPriority(Thread.MIN_PRIORITY);
-                thread.start();
+                threads[i] = thread;
+//                thread.start();
             }
 
             Ball b = new Ball(canvas, x, y);
@@ -96,7 +110,11 @@ public class BounceFrame extends JFrame {
             canvas.add(b);
             BallThread thread = new BallThread(b);
             thread.setPriority(Thread.MAX_PRIORITY);
-            thread.start();
+            threads[size] = thread;
+
+            for (int i = 0; i < size + 1; i++) {
+                threads[i].start();
+            }
         });
 
         buttonJoinThread.addActionListener(e -> {
@@ -124,7 +142,7 @@ public class BounceFrame extends JFrame {
         content.add(buttonPanel, BorderLayout.SOUTH);
     }
 
-    static public void updateBallsInHolesCounter() {
+    static synchronized public void updateBallsInHolesCounter() {
         counterLabel.setText("Balls in holes: " + ballsInHolesCounter);
     }
 

@@ -39,11 +39,6 @@ public class Ball {
         this.y = y;
     }
 
-
-    public static void f() {
-        int a = 0;
-    }
-
     public void setColor(Color color) {
         this.color = color;
     }
@@ -83,7 +78,7 @@ public class Ball {
         this.canvas.repaint();
     }
 
-    public boolean interactsWithHole() {
+    public boolean interactsWithHoles() {
         ArrayList<Hole> holes = BallCanvas.getHoles();
 
         for (int i = 0; i < holes.size(); i++) {
@@ -103,9 +98,10 @@ public class Ball {
         double radius1 = this.Y_SIZE / 2;
         double radius2 = hole.Y_SIZE / 2;
 
-        double distanceBetweenCenters = Math.sqrt((centerX1 - centerX2)
-                                        * (centerX1 - centerX2) + (centerY1 - centerY2)
-                                        * (centerY1 - centerY2));
+        double distanceBetweenCenters = Math.sqrt(
+                (centerX1 - centerX2) * (centerX1 - centerX2) +
+                (centerY1 - centerY2) * (centerY1 - centerY2)
+        );
 
         return distanceBetweenCenters <= (radius1 + radius2);
     }

@@ -2,12 +2,26 @@ package Counter;
 
 public class Main {
     public static void main(String[] args) {
-        int countOfOperarions = 100000;
+
+        long start = System.currentTimeMillis();
+        int countOfOperations = 100000;
 
         Counter counter = new Counter();
 
-        CounterThread counterThread1 = new CounterThread(counter::increment, countOfOperarions);
-        CounterThread counterThread2 = new CounterThread(counter::decrement, countOfOperarions);
+//        CounterThread counterThread1 = new CounterThread(counter::increment, countOfOperations);
+//        CounterThread counterThread2 = new CounterThread(counter::decrement, countOfOperations);
+
+//        CounterThread counterThread1 = new CounterThread(counter::syncIncrement, countOfOperations);
+//        CounterThread counterThread2 = new CounterThread(counter::syncDecrement, countOfOperations);
+
+//        CounterThread counterThread1 = new CounterThread(counter::lockerIncrement, countOfOperations);
+//        CounterThread counterThread2 = new CounterThread(counter::lockerDecrement, countOfOperations);
+
+        CounterThread counterThread1 = new CounterThread(counter::syncBlockIncrement, countOfOperations);
+        CounterThread counterThread2 = new CounterThread(counter::syncBlockDecrement, countOfOperations);
+
+        counterThread1.setPriority(Thread.MAX_PRIORITY);
+        counterThread2.setPriority(Thread.MAX_PRIORITY);
 
         counterThread1.start();
         counterThread2.start();
@@ -20,5 +34,8 @@ public class Main {
         }
 
         System.out.println(counter.getCount());
+
+        long end = System.currentTimeMillis();
+        System.out.println(end - start);
     }
 }

@@ -14,23 +14,22 @@ public class BallThread extends Thread {
     @Override
     public void run() {
         try {
-            for (int i = 1; i < 100000; i++) {
+            while(!b.interactsWithHoles()) {
+//                System.out.println("Thread name = " + Thread.currentThread().getName());
+
                 b.move();
-
-                if (b.interactsWithHole()) {
-                    BounceFrame.ballsInHolesCounter++;
-                    BounceFrame.updateBallsInHolesCounter();
-
-                    this.interrupt();
-                    BallCanvas.remove(b);
-                    b.repaintCanvas();
-                }
-
                 Thread.sleep(1000 / 120);
             }
+
+            BounceFrame.incrementBallsInHolesCounter();
+            BounceFrame.updateBallsInHolesCounter();
+
             BallCanvas.remove(b);
             b.repaintCanvas();
+
         } catch (InterruptedException ex) {
+            BallCanvas.remove(b);
+            b.repaintCanvas();
             System.out.println(ex.getLocalizedMessage());
         }
     }
