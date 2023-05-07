@@ -16,8 +16,8 @@ public class StripeMatrixMultiplicator implements MatrixMultiplicator {
             throw new IllegalArgumentException("Not right size for multiplication");
         }
 
-        this.result = new Result(m1.getDimensionX(), m2.getDimensionY());
-        StripeThread[] threads = this.createThreads(m1, m2);
+        Result result = new Result(m1.getDimensionX(), m2.getDimensionY());
+        StripeThread[] threads = this.createThreads(m1, m2, result);
 
         for (StripeThread thread : threads) {
             thread.start();
@@ -31,10 +31,10 @@ public class StripeMatrixMultiplicator implements MatrixMultiplicator {
             }
         }
 
-        return this.result;
+        return result;
     }
 
-    private StripeThread[] createThreads(Matrix m1, Matrix m2) {
+    private StripeThread[] createThreads(Matrix m1, Matrix m2, Result result) {
 
         final int countOfGroups = Math.min(m1.getDimensionX(), this.countOfThreads);
         final int rowGroupSize = m1.getDimensionX() / countOfGroups;
@@ -50,7 +50,7 @@ public class StripeMatrixMultiplicator implements MatrixMultiplicator {
 
             Matrix rowGroup = m1.getRows(i * rowGroupSize, currentRowSize);
 
-            StripeThread stripeThread = new StripeThread(rowGroup, i * rowGroupSize, m2Transposed, this.result);
+            StripeThread stripeThread = new StripeThread(rowGroup, i * rowGroupSize, m2Transposed, result);
 
             threads[i] = stripeThread;
 

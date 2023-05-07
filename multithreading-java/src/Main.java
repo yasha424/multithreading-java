@@ -4,32 +4,52 @@ import Models.*;
 
 public class Main {
     public static void main(String[] args) {
-        final Matrix m1 = Matrix.generateRandomMatrix(1000, 1000);
-        final Matrix m2 = Matrix.generateRandomMatrix(1000, 1000);
-
-        long start = System.currentTimeMillis();
-        MatrixMultiplicator matrixMultiplicator1 = new StripeMatrixMultiplicator(8);
-        Result result1 = matrixMultiplicator1.multiply(m1, m2);
-        long end = System.currentTimeMillis();
-
-        System.out.println("Stripe 2 threaded: " + (end - start));
-
-        start = System.currentTimeMillis();
-        MatrixMultiplicator matrixMultiplicator2 = new FoxMatrixMultiplicator(8);
-        Result result2 = matrixMultiplicator2.multiply(m1, m2);
-        end = System.currentTimeMillis();
-
-        System.out.println("Fox 2 threaded: " + (end - start));
-        System.out.println(result1.equals(result2));
+        final int[] threadNums = { 1, 2, 4, 6, 8, 16, 32, 64, 100, 400, 625 };
+        testDifferentCountOfThreads(threadNums, 1000);
     }
 
-    static public Matrix oneThreadedMultiplication(Matrix m1, Matrix m2) {
-        return m1.multiply(m2);
+    public static void testDifferentCountOfThreads(int[] threadNums, int sizeOfMatrix) {
+        double naiveMetrics[] = new double[threadNums.length];
+        double stripeMetrics[] = new double[threadNums.length];
+        double foxMetrics[] = new double[threadNums.length];
+        long start, end;
+
+        for (int i = 0; i < threadNums.length; i++) {
+
+            Matrix m1 = Matrix.generateRandomMatrix(sizeOfMatrix, sizeOfMatrix);
+            Matrix m2 = Matrix.generateRandomMatrix(sizeOfMatrix, sizeOfMatrix);
+
+            start = System.currentTimeMillis();
+            Matrix naiveResult = m1.multiply(m2);
+            end = System.currentTimeMillis();
+            System.out.println("Naive multiplication: " + (end - start));
+            naiveMetrics[i] = end - start;
+
+            start = System.currentTimeMillis();
+            MatrixMultiplicator stripeMultiplicator = new StripeMatrixMultiplicator(threadNums[i]);
+            Result stripeResult = stripeMultiplicator.multiply(m1, m2);
+            end = System.currentTimeMillis();
+            System.out.println("Stripe multiplication with " + threadNums[i] + " threads: " + (end - start));
+            stripeMetrics[i] = end - start;
+
+            start = System.currentTimeMillis();
+            System.out.println((int) Math.sqrt(threadNums[i]));
+            MatrixMultiplicator foxMultiplicator = new FoxMatrixMultiplicator((int) Math.sqrt(threadNums[i]));
+            Result foxResult = foxMultiplicator.multiply(m1, m2);
+            end = System.currentTimeMillis();
+            System.out.println("Fox multiplication with " + threadNums[i] + " threads: " + (end - start));
+            foxMetrics[i] = end - start;
+
+            System.out.println(naiveResult.equals(stripeResult));
+            System.out.println(naiveResult.equals(foxResult));
+        }
+
+        for (int i = 0; i < threadNums.length; i++) {
+            System.out.println("Speedup with " + threadNums[i] + " threads");
+            System.out.println("\tStripe speedup: " + naiveMetrics[i] / stripeMetrics[i]);
+            System.out.println("\tFox speedup: " + naiveMetrics[i] / foxMetrics[i]);
+        }
     }
 
-    static public Matrix multiThreadedStripeMultiplication(Matrix m1, Matrix m2) {
-        StripeMatrixMultiplicator multiplicator = new StripeMatrixMultiplicator(8);
 
-        return multiplicator.multiply(m1, m2);
-    }
 }

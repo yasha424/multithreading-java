@@ -22,8 +22,18 @@ public class FoxThread extends Thread {
     @Override
     public void run() {
         for (int i = 0; i < iterations; i++) {
-            result.add(m1.multiply(m2));
+            multiplyMatrices();
             syncer.update(i);
+        }
+    }
+
+    private void multiplyMatrices() {
+        for (int i = 0; i < m1.getDimensionX(); i++) {
+            for (int j = 0; j < m2.getDimensionY(); j++) {
+                for (int k = 0; k < m2.getDimensionX(); k++) {
+                    result.data[i][j] += m1.data[i][k] * m2.data[k][j];
+                }
+            }
         }
     }
 

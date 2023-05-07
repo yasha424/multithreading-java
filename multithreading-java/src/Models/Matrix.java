@@ -46,7 +46,7 @@ public class Matrix {
         return matrix;
     }
 
-    static public Matrix generateRandomMatrixInRange(int rows, int columns, double minValue, double maxValue) {
+    static public Matrix generateRandomMatrix(int rows, int columns, double minValue, double maxValue) {
         Matrix matrix = new Matrix(rows, columns);
 
         Random random = new Random();
@@ -136,7 +136,7 @@ public class Matrix {
         }
         for(int i = 0; i < this.getDimensionX(); i++) {
             for(int j = 0; j < this.getDimensionY(); j++) {
-                if (Math.abs(this.get(i, j) - matrix.get(i, j)) > 0.0001) {
+                if (Math.abs(this.get(i, j) - matrix.get(i, j)) > 0.0000001) {
                     return false;
                 }
             }
