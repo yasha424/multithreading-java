@@ -19,7 +19,7 @@ public class FoxMatrixMultiplicator implements MatrixMultiplicator {
             throw new IllegalArgumentException("Matrix must be squared and be a multiple of the square root of the number of threads.");
         }
 
-        int blockSize = m1.getDimensionX() / blocksNumSqrt; // 25
+        int blockSize = m1.getDimensionX() / blocksNumSqrt;
 
         FoxThread[][] threads = new FoxThread[blocksNumSqrt][blocksNumSqrt];
         FoxSyncer syncer = new FoxSyncer(threads, m1, m2);
