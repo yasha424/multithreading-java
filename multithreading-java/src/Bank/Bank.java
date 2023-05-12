@@ -10,6 +10,8 @@ class Bank {
     private final ReentrantLock locker = new ReentrantLock();
     Condition emptyCondition = locker.newCondition();
 
+    private final Object lockedObject = new Object();
+
     public Bank(int n, int initialBalance){
         accounts = new int[n];
         int i;
@@ -38,10 +40,10 @@ class Bank {
     }
 
     public void synchronizedBlockTransfer(int from, int to, int amount) {
-        synchronized (this) {
+        synchronized (lockedObject) {
             while (accounts[from] < amount) {
                 try {
-                    wait();
+                    lockedObject.wait();
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -54,7 +56,7 @@ class Bank {
                 test();
             }
 
-            notifyAll();
+            lockedObject.notifyAll();
         }
     }
 
@@ -75,8 +77,8 @@ class Bank {
             if (ntransacts % NTEST == 0) {
                 test();
             }
-        } finally {
             emptyCondition.signalAll();
+        } finally {
             locker.unlock();
         }
     }

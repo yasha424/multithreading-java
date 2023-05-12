@@ -1,14 +1,13 @@
 package Journal;
 
-import Journal.Groups.Group;
-import Journal.Groups.Student;
+import Journal.Groups.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Journal {
-    private final HashMap<Student, ArrayList<Integer>[]> grades = new HashMap<>();
+    private final ConcurrentHashMap<Student, ArrayList<Integer>[]> grades = new ConcurrentHashMap<>();
     private final int weeks;
 
     public Journal(Group[] groups, int weeks) {

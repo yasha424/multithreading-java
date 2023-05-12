@@ -20,7 +20,7 @@ public class Producer implements Runnable {
             drop.put(number);
 
             try {
-                Thread.sleep(random.nextInt(5000));
+                Thread.sleep(random.nextInt(1000));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

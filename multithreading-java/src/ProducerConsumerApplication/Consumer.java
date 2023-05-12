@@ -16,7 +16,7 @@ public class Consumer implements Runnable {
         for (int i = 0; i < arraySize; i++) {
             drop.take();
             try {
-                Thread.sleep(random.nextInt(5000));
+                Thread.sleep(random.nextInt(1000));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
