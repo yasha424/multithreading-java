@@ -6,8 +6,8 @@ import java.util.concurrent.ForkJoinPool;
 public class TextAnalysis {
     public static void main(String[] args) {
 
-        boolean isSerial = false;
-        var file = new File("/Users/yasha/second-half/Технології паралельних обчислень/multithreading-java/multithreading-java/src/data/large");
+        boolean isSerial = false; // 20s vs 27s, 39.47s vs 55s
+        var file = new File("/Users/yasha/second-half/Технології паралельних обчислень/data/");
 
         if (isSerial) {
             var serialAnalyser = new SerialAnalyser(file);
@@ -15,7 +15,7 @@ public class TextAnalysis {
             var wordsMap = serialAnalyser.compute();
             long end = System.currentTimeMillis();
 
-            System.out.println("Serial execution time " + (end - start));
+            System.out.println("Serial execution time " + (end - start) + "ms");
 
             System.out.println(serialAnalyser.getMean());
             System.out.println(serialAnalyser.getVariance());
@@ -29,7 +29,7 @@ public class TextAnalysis {
             var wordsMap = forkJoinPool.invoke(analysisTask);
             long end = System.currentTimeMillis();
 
-            System.out.println("Concurrent execution time " + (end - start));
+            System.out.println("Concurrent execution time " + (end - start) + "ms");
 
             System.out.println("Mean: " + analysisTask.getMean());
             System.out.println("Variance: " + analysisTask.getVariance());

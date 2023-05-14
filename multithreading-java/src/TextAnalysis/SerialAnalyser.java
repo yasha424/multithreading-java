@@ -1,17 +1,16 @@
 package TextAnalysis;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 public class SerialAnalyser {
-    private ArrayDeque<File> fileArray = new ArrayDeque<>();
-    private HashMap<Integer, Integer> wordsMap = new HashMap<>();
+    private final ArrayDeque<File> fileArray = new ArrayDeque<>();
+    private final HashMap<Integer, Integer> wordsMap = new HashMap<>();
+    private final Analyser analyserProcessor = new Analyser();
 
     public SerialAnalyser(File file) {
         fileArray.add(file);
@@ -22,12 +21,12 @@ public class SerialAnalyser {
         while ((file = fileArray.poll()) != null) {
             if (file.isDirectory()) {
                 var subFiles = file.listFiles();
-                for (var subFile : subFiles) {
-                    fileArray.add(subFile);
-                }
+
+                assert subFiles != null;
+                Collections.addAll(fileArray, subFiles);
             } else {
                 try {
-                    List<String> words = getWords(file);
+                    List<String> words = analyserProcessor.getWords(file);
                     for (var word : words) {
                         int length = word.length(); // key
                         if (wordsMap.containsKey(length)) {
@@ -45,49 +44,12 @@ public class SerialAnalyser {
         return wordsMap;
     }
 
-    private List<String> getWords(File file) throws IOException {
-
-        List<String> words = new ArrayList<>();
-        String currentLine;
-
-        var bufferedReader = new BufferedReader(new FileReader(file));
-
-        while ((currentLine = bufferedReader.readLine()) != null) {
-            var tokens = currentLine.trim().split("[\\s,:;.?!]+");
-            for (var token : tokens) {
-                if (token.matches("\\p{L}[\\p{L}-']*")) {
-                    words.add(token);
-                }
-            }
-        }
-        return words;
-    }
-
     public HashMap<Integer, Double> getDistributionLaw() {
-        var law = new HashMap<Integer, Double>();
-
-        long sum = 0;
-        for (var entry : wordsMap.entrySet()) {
-            sum += entry.getValue();
-        }
-
-        for (var entry: wordsMap.entrySet()) {
-            law.put(entry.getKey(), ((double) entry.getValue()) / sum);
-        }
-
-        return law;
+        return analyserProcessor.getDistributionLaw(wordsMap);
     }
-
 
     public double getMean() {
-        double mean = 0;
-        var law = getDistributionLaw();
-
-        for (var entry : law.entrySet()) {
-            mean += entry.getKey() * entry.getValue();
-        }
-
-        return mean;
+        return analyserProcessor.getMean(getDistributionLaw());
     }
 
     public double getDeviation() {
@@ -95,14 +57,6 @@ public class SerialAnalyser {
     }
 
     public double getVariance() {
-        double variance = 0;
-
-        var law = getDistributionLaw();
-        for (var entry : law.entrySet()) {
-            variance += Math.pow(entry.getKey(), 2) * entry.getValue();
-        }
-
-        variance -= Math.pow(getMean(), 2);
-        return variance;
+        return analyserProcessor.getVariance(getDistributionLaw());
     }
 }
