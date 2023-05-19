@@ -9,13 +9,11 @@ public class KeywordsSearchTask extends RecursiveTask<ArrayList<File>> {
 
     File file;
     ArrayList<File> files = new ArrayList<>();
-    ArrayList<String> keywords = new ArrayList<>();
+    ArrayList<String> keywords;
 
     public KeywordsSearchTask(File file, ArrayList<String> keywords) {
         this.file = file;
-        for (var word : keywords) {
-            this.keywords.add(word.toLowerCase());
-        }
+        this.keywords = keywords;
     }
 
     @Override
@@ -35,7 +33,6 @@ public class KeywordsSearchTask extends RecursiveTask<ArrayList<File>> {
                 var newFiles = subTask.join();
                 this.files.addAll(newFiles);
             }
-            return this.files;
         } else {
             List<String> words;
             try {
@@ -44,14 +41,14 @@ public class KeywordsSearchTask extends RecursiveTask<ArrayList<File>> {
                 throw new RuntimeException(e);
             }
 
-            for (var word : words) {
-                if (keywords.contains(word)) {
-                    this.files.add(file);
-                    return this.files;
+            for (var keyword : keywords) {
+                if (!words.contains(keyword)) {
+                    return new ArrayList<>();
                 }
             }
-            return new ArrayList<>();
+            this.files.add(file);
         }
+        return this.files;
     }
 
     private List<String> getWords(File file) throws IOException {
