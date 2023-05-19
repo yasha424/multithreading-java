@@ -1,32 +1,37 @@
 package ProducerConsumerApplication;
 
+import java.util.Arrays;
+
 public class Drop {
-    private Double message;
-    private boolean empty = true;
+    private Double[] buffer;
+    private int elementsInBuffer = 0;
+
+    public Drop(int bufferSize) {
+        this.buffer = new Double[bufferSize];
+    }
 
     public synchronized Double take() {
-        while (empty) {
+        while (elementsInBuffer < 1) {
             try {
                 wait();
             } catch (InterruptedException e) {}
         }
 
-        empty = true;
-        System.out.println("Received: " + message);
+        elementsInBuffer--;
+        var message = buffer[elementsInBuffer];
         notifyAll();
         return message;
     }
 
     public synchronized void put(Double message) {
-        while (!empty) {
+        while (elementsInBuffer >= buffer.length) {
             try {
                 wait();
             } catch (InterruptedException e) {}
         }
 
-        empty = false;
-        this.message = message;
-        System.out.println("Sent: " + message);
+        buffer[elementsInBuffer] = message;
+        elementsInBuffer++;
         notifyAll();
     }
 }

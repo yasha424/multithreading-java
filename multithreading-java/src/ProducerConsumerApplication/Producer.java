@@ -4,17 +4,17 @@ import java.util.Random;
 
 public class Producer implements Runnable {
     private final Drop drop;
-    private final int arraySize;
+    private final int messagesToSend;
 
-    public Producer(Drop drop, int arraySize) {
+    public Producer(Drop drop, int messagesToSend) {
         this.drop = drop;
-        this.arraySize = arraySize;
+        this.messagesToSend = messagesToSend;
     }
 
     public void run() {
         Random random = new Random();
 
-        for (int i = 0; i < arraySize; i++) {
+        for (int i = 0; i < messagesToSend; i++) {
             double number = random.nextDouble();
 
             drop.put(number);
@@ -25,5 +25,6 @@ public class Producer implements Runnable {
                 e.printStackTrace();
             }
         }
+        drop.put((double) -1);
     }
 }

@@ -19,7 +19,7 @@ public class AsyncBankTest {
         for (i = 0; i < NACCOUNTS; i++){
             TransferThread t = new TransferThread(b, i, INITIAL_BALANCE, method);
             t.setPriority(Thread.NORM_PRIORITY + i % 2);
-            t.start () ;
+            t.start();
         }
     }
 }
