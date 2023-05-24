@@ -9,7 +9,6 @@ public class FoxThread extends Thread {
     private final FoxSyncer syncer;
     private final Matrix result;
 
-
     FoxThread(Matrix m1, Matrix m2, int iterations, FoxSyncer syncer) {
         this.m1 = m1;
         this.m2 = m2;

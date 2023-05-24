@@ -5,7 +5,7 @@ import Models.*;
 public class Main {
 
     public static void main(String[] args) {
-        final int[] sizes = { 32, 64, 128, 256, 512, 1000 };
+//        final int[] sizes = { 32, 64, 128, 256, 512, 1000 };
         final int[] threadNums = { 1, 2, 4, 6, 8, 16, 32, 64, 100, 400, 625 };
 
 //        testDifferentSizesOfMatrices(sizes);
@@ -78,7 +78,7 @@ public class Main {
             MatrixMultiplicator foxMultiplicator = new FoxMatrixMultiplicator((int) Math.sqrt(threadNums[i]));
             Result foxResult = foxMultiplicator.multiply(m1, m2);
             end = System.currentTimeMillis();
-            System.out.println("Fox multiplication with " + threadNums[i] + " threads: " + (end - start));
+            System.out.println("Fox multiplication with " + (int) Math.pow((int) Math.sqrt(threadNums[i]), 2) + " threads: " + (end - start));
             foxMetrics[i] = end - start;
 
 //            System.out.println(naiveResult.equals(stripeResult));

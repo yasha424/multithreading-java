@@ -4,7 +4,7 @@ import Models.*;
 
 public class StripeMatrixMultiplicator implements MatrixMultiplicator {
     private final int countOfThreads;
-    private Result result = null;
+    private final Result result = null;
 
     public StripeMatrixMultiplicator(int countOfThreads) {
         this.countOfThreads = countOfThreads;
@@ -40,17 +40,22 @@ public class StripeMatrixMultiplicator implements MatrixMultiplicator {
         final int rowGroupSize = m1.getDimensionX() / countOfGroups;
 
         final Matrix m2Transposed = m2.transposed();
+        final int columnGroupSize = m2Transposed.getDimensionX() / countOfGroups;
         final StripeThread[] threads = new StripeThread[countOfGroups];
+        StripeSyncer syncer = new StripeSyncer(threads, countOfGroups);
 
         for(int i = 0; i < countOfGroups; i++) {
             int currentRowSize = rowGroupSize;
+            int currentColumnSize = columnGroupSize;
             if (i == countOfGroups - 1) {
                 currentRowSize = Math.max(rowGroupSize, m1.getDimensionX() - i * rowGroupSize);
+                currentColumnSize = Math.max(columnGroupSize, m2Transposed.getDimensionX() - i * columnGroupSize);
             }
 
             Matrix rowGroup = m1.getRows(i * rowGroupSize, currentRowSize);
+            Matrix columnGroup = m2Transposed.getRows(i * rowGroupSize, currentColumnSize);
 
-            StripeThread stripeThread = new StripeThread(rowGroup, i * rowGroupSize, m2Transposed, result);
+            StripeThread stripeThread = new StripeThread(rowGroup, i * rowGroupSize, columnGroup, i * columnGroupSize, result, countOfGroups, syncer);
 
             threads[i] = stripeThread;
 
