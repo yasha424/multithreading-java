@@ -2,21 +2,21 @@ package Journal;
 
 import Journal.Groups.*;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ArrayBlockingQueue;
 
 public class Journal {
-    private final ConcurrentHashMap<Student, ArrayList<Integer>[]> grades = new ConcurrentHashMap<>();
+    private final Map<Student, ArrayBlockingQueue<Integer>[]> grades = new HashMap<>();
     private final int weeks;
 
     public Journal(Group[] groups, int weeks) {
         this.weeks = weeks;
         for (Group group : groups) {
             for (Student student : group.getStudents()) {
-                ArrayList[] grades = new ArrayList[weeks];
+                ArrayBlockingQueue<Integer>[] grades = new ArrayBlockingQueue[weeks];
                 for (int i = 0; i < weeks; i++) {
-                    grades[i] = new ArrayList<>(4);
+                    grades[i] = new ArrayBlockingQueue<>(4);
                 }
                 this.grades.put(student, grades);
             }
@@ -31,7 +31,7 @@ public class Journal {
     }
 
     public void print() {
-        for (Map.Entry<Student, ArrayList<Integer>[]> entry : this.grades.entrySet()) {
+        for (Map.Entry<Student, ArrayBlockingQueue<Integer>[]> entry : this.grades.entrySet()) {
             System.out.println(entry.getKey().group().getName() + " " + entry.getKey().name());
             for (int i = 0; i < entry.getValue().length; i++) {
                 System.out.print("\tWeek №" + i + " ");

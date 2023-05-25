@@ -12,7 +12,7 @@ public class AsyncBankTest {
     public static final int INITIAL_BALANCE = 10000;
 
     public static void main(String[] args) {
-        Method method = Method.lock;
+        Method method = Method.syncBlock;
 
         Bank b = new Bank(NACCOUNTS, INITIAL_BALANCE);
         int i;
