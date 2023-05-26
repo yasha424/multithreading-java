@@ -38,6 +38,7 @@ public class StripeMatrixMultiplicator implements MatrixMultiplicator {
 
         final int countOfGroups = Math.min(m1.getDimensionX(), this.countOfThreads);
         final int rowGroupSize = m1.getDimensionX() / countOfGroups;
+        final int colGroupSize = m2.getDimensionY() / countOfGroups;
 
         final Matrix m2Transposed = m2.transposed();
         final int columnGroupSize = m2Transposed.getDimensionX() / countOfGroups;
@@ -53,12 +54,9 @@ public class StripeMatrixMultiplicator implements MatrixMultiplicator {
             }
 
             Matrix rowGroup = m1.getRows(i * rowGroupSize, currentRowSize);
-            Matrix columnGroup = m2Transposed.getRows(i * rowGroupSize, currentColumnSize);
-
+            Matrix columnGroup = m2Transposed.getRows(i * colGroupSize, currentColumnSize);
             StripeThread stripeThread = new StripeThread(rowGroup, i * rowGroupSize, columnGroup, i * columnGroupSize, result, countOfGroups, syncer);
-
             threads[i] = stripeThread;
-
         }
 
         return threads;

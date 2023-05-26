@@ -25,10 +25,9 @@ public class FoxMatrixMultiplicator implements MatrixMultiplicator {
         FoxSyncer syncer = new FoxSyncer(threads, m1, m2);
 
         for (int i = 0; i < blocksNumSqrt; i++) {
+            Matrix m1Block = m1.getSquareBlock(i * blockSize, i * blockSize, blockSize);
             for (int j = 0; j < blocksNumSqrt; j++) {
-                Matrix m1Block = m1.getSquareBlock(i * blockSize, i * blockSize, blockSize);
                 Matrix m2Block = m2.getSquareBlock(i * blockSize, j * blockSize, blockSize);
-
                 threads[i][j] = new FoxThread(m1Block, m2Block, blocksNumSqrt, syncer);
             }
         }

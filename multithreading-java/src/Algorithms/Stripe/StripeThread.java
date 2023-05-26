@@ -23,18 +23,21 @@ public class StripeThread extends Thread {
 
     @Override
     public void run() {
-        for (int iteration = 0; iteration < iterations; iteration++){
-            for (int i = 0; i < rowGroup.getDimensionX(); i++) {
-                for (int j = 0; j < columnGroup.getDimensionX(); j++) {
-                    for (int k = 0; k < columnGroup.getDimensionY(); k++) {
-                        this.result.data[i + aOffset][j + bOffset] += rowGroup.get(i, k) * columnGroup.get(j, k);
-                    }
-                }
-            }
-            syncer.update(iteration);
+        for (int i = 0; i < iterations; i++){
+            multiplyMatrices();
+            syncer.update(i);
         }
     }
 
+    private void multiplyMatrices() {
+        for (int i = 0; i < rowGroup.getDimensionX(); i++) {
+            for (int j = 0; j < columnGroup.getDimensionX(); j++) {
+                for (int k = 0; k < columnGroup.getDimensionY(); k++) {
+                    this.result.data[i + aOffset][j + bOffset] += rowGroup.get(i, k) * columnGroup.get(j, k);
+                }
+            }
+        }
+    }
 
     public Matrix getColumnGroup() {
         return columnGroup;

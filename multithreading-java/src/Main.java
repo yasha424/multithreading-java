@@ -51,34 +51,33 @@ public class Main {
 
 
     public static void testDifferentCountOfThreads(int[] threadNums, int sizeOfMatrix) {
-        double[] naiveMetrics = new double[threadNums.length];
+        double naiveMetrics;
         double[] stripeMetrics = new double[threadNums.length];
         double[] foxMetrics = new double[threadNums.length];
         long start, end;
 
+        Matrix m1 = Matrix.generateRandomMatrix(sizeOfMatrix, sizeOfMatrix);
+        Matrix m2 = Matrix.generateRandomMatrix(sizeOfMatrix, sizeOfMatrix);
+
+        start = System.currentTimeMillis();
+        Matrix naiveResult = m1.multiply(m2);
+        end = System.currentTimeMillis();
+        System.out.println("Naive multiplication: " + (end - start));
+        naiveMetrics = end - start;
+
         for (int i = 0; i < threadNums.length; i++) {
-
-            Matrix m1 = Matrix.generateRandomMatrix(sizeOfMatrix, sizeOfMatrix);
-            Matrix m2 = Matrix.generateRandomMatrix(sizeOfMatrix, sizeOfMatrix);
-
-            start = System.currentTimeMillis();
-            Matrix naiveResult = m1.multiply(m2);
-            end = System.currentTimeMillis();
-            System.out.println("Naive multiplication: " + (end - start));
-            naiveMetrics[i] = end - start;
-
             start = System.currentTimeMillis();
             MatrixMultiplicator stripeMultiplicator = new StripeMatrixMultiplicator(threadNums[i]);
             Result stripeResult = stripeMultiplicator.multiply(m1, m2);
             end = System.currentTimeMillis();
-            System.out.println("Stripe multiplication with " + threadNums[i] + " threads: " + (end - start));
+            System.out.println("Stripe multiplication with " + threadNums[i] + " threads: " + (end - start) + "ms");
             stripeMetrics[i] = end - start;
 
             start = System.currentTimeMillis();
             MatrixMultiplicator foxMultiplicator = new FoxMatrixMultiplicator((int) Math.sqrt(threadNums[i]));
             Result foxResult = foxMultiplicator.multiply(m1, m2);
             end = System.currentTimeMillis();
-            System.out.println("Fox multiplication with " + (int) Math.pow((int) Math.sqrt(threadNums[i]), 2) + " threads: " + (end - start));
+            System.out.println("Fox multiplication with " + (int) Math.pow((int) Math.sqrt(threadNums[i]), 2) + " threads: " + (end - start) + "ms");
             foxMetrics[i] = end - start;
 
 //            System.out.println(naiveResult.equals(stripeResult));
@@ -87,8 +86,8 @@ public class Main {
 
         for (int i = 0; i < threadNums.length; i++) {
             System.out.println("Speedup with " + threadNums[i] + " threads");
-            System.out.println("\tStripe speedup: " + naiveMetrics[i] / stripeMetrics[i]);
-            System.out.println("\tFox speedup: " + naiveMetrics[i] / foxMetrics[i]);
+            System.out.println("\tStripe speedup: " + naiveMetrics / stripeMetrics[i]);
+            System.out.println("\tFox speedup: " + naiveMetrics / foxMetrics[i]);
         }
     }
 

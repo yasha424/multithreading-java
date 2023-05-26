@@ -40,9 +40,10 @@ public class FoxSyncer {
         int blockSize = m1.getDimensionX() / threads.length;
         for (int i = 0; i < threads.length; i++) {
             int k = (i * blockSize + (iteration + 1) * blockSize) % (m1.getDimensionY());
+            var m1Block = m1.getSquareBlock(i * blockSize, k, blockSize);
 
             for (int j = 0; j < threads[0].length; j++) {
-                threads[i][j].setM1Block(m1.getSquareBlock(i * blockSize, k, blockSize));
+                threads[i][j].setM1Block(m1Block);
                 threads[i][j].setM2Block(m2.getSquareBlock(k, j * blockSize, blockSize));
             }
         }
