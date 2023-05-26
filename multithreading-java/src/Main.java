@@ -6,7 +6,7 @@ public class Main {
 
     public static void main(String[] args) {
 //        final int[] sizes = { 32, 64, 128, 256, 512, 1000 };
-        final int[] threadNums = { 1, 2, 4, 6, 8, 16, 32, 64, 100, 400, 625 };
+        final int[] threadNums = { 1, 2, 4, 8, 16, 25, 64, 100, 400, 625 };
 
 //        testDifferentSizesOfMatrices(sizes);
         testDifferentCountOfThreads(threadNums, 1000);
