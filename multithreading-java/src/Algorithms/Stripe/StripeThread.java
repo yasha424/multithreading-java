@@ -23,7 +23,7 @@ public class StripeThread extends Thread {
 
     @Override
     public void run() {
-        for (int i = 0; i < iterations; i++){
+        for (int i = 0; i < iterations; i++) {
             multiplyMatrices();
             syncer.update(i);
         }

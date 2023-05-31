@@ -44,6 +44,10 @@ public class FoxThread extends Thread {
         this.m2 = block;
     }
 
+    public Matrix getM2Block() {
+        return this.m2;
+    }
+
     public Matrix getResult() {
         return result;
     }

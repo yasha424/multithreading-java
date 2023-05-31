@@ -22,7 +22,7 @@ public class FoxMatrixMultiplicator implements MatrixMultiplicator {
         int blockSize = m1.getDimensionX() / blocksNumSqrt;
 
         FoxThread[][] threads = new FoxThread[blocksNumSqrt][blocksNumSqrt];
-        FoxSyncer syncer = new FoxSyncer(threads, m1, m2);
+        FoxSyncer syncer = new FoxSyncer(threads, m1);
 
         for (int i = 0; i < blocksNumSqrt; i++) {
             Matrix m1Block = m1.getSquareBlock(i * blockSize, i * blockSize, blockSize);

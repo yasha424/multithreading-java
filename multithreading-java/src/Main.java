@@ -5,11 +5,11 @@ import Models.*;
 public class Main {
 
     public static void main(String[] args) {
-//        final int[] sizes = { 32, 64, 128, 256, 512, 1000 };
-        final int[] threadNums = { 1, 2, 4, 8, 16, 25, 64, 100, 400, 625 };
+        final int[] sizes = { 32, 64, 128, 256, 512, 1000, 1500, 2000 };
+//        final int[] threadNums = { 1, 2, 4, 8, 16, 25, 64, 100, 400, 625 };
 
-//        testDifferentSizesOfMatrices(sizes);
-        testDifferentCountOfThreads(threadNums, 1000);
+        testDifferentSizesOfMatrices(sizes);
+//        testDifferentCountOfThreads(threadNums, 1000);
     }
 
     public static void testDifferentSizesOfMatrices(int[] sizes) {
@@ -90,6 +90,4 @@ public class Main {
             System.out.println("\tFox speedup: " + naiveMetrics / foxMetrics[i]);
         }
     }
-
-
 }
