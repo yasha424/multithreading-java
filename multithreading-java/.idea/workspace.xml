@@ -5,16 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="82c671d4-4cbf-46d7-9aa3-fd2efceacf07" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/lib.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multithreading-java.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/BlockingMatrixMultiplication/BlockingMatrixMultiplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Matrix/Matrix.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NonBlockingMatrixMultiplication/NonBlockingMatrixMultiplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BlockingMatrixMultiplication/BlockingMatrixMultiplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BlockingMatrixMultiplication/BlockingMatrixMultiplication.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,18 +42,18 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.0",
+    "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2"
   }
 }]]></component>
-  <component name="RunManager" selected="Application.MPJ">
-    <configuration name="MPJ" type="Application" factoryName="Application">
+  <component name="RunManager" selected="Application.NonBlockingMatrixMultiplication">
+    <configuration name="BlockingMatrixMultiplication" type="Application" factoryName="Application">
       <envs>
         <env name="MPJ_HOME" value="/usr/local/mpj-v0_44" />
       </envs>
       <option name="MAIN_CLASS_NAME" value="BlockingMatrixMultiplication.BlockingMatrixMultiplication" />
       <module name="multithreading-java" />
-      <option name="VM_PARAMETERS" value="-jar $MPJ_HOME$/lib/starter.jar -np 4" />
+      <option name="VM_PARAMETERS" value="-jar $MPJ_HOME$/lib/starter.jar -np 3" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -71,8 +65,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="NonBlockingMatrixMultiplication" type="Application" factoryName="Application">
+      <envs>
+        <env name="MPJ_HOME" value="/usr/local/mpj-v0_44" />
+      </envs>
+      <option name="MAIN_CLASS_NAME" value="NonBlockingMatrixMultiplication.NonBlockingMatrixMultiplication" />
+      <module name="multithreading-java" />
+      <option name="VM_PARAMETERS" value="-jar $MPJ_HOME$/lib/starter.jar -np 3" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
-      <item itemvalue="Application.MPJ" />
+      <item itemvalue="Application.BlockingMatrixMultiplication" />
+      <item itemvalue="Application.NonBlockingMatrixMultiplication" />
       <item itemvalue="Application.Main" />
     </list>
   </component>

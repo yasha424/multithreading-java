@@ -38,7 +38,7 @@ public class BlockingMatrixMultiplication {
             a = Matrix.generateRandomMatrix(NUM_ROWS_A, NUM_COLS_A);
             b = Matrix.generateRandomMatrix(NUM_COLS_A, NUM_COLS_B);
 
-            double startTime = System.currentTimeMillis();
+            long startTime = System.currentTimeMillis();
 
             int extraRows = NUM_ROWS_A % numWorkers;
             int numRowsInTask = a.getDimensionX() / numWorkers;
@@ -60,7 +60,7 @@ public class BlockingMatrixMultiplication {
                 MPI.COMM_WORLD.Recv(c.data, offset[0], rows[0], MPI.OBJECT, source, FROM_WORKER_TAG);
             }
 
-            double endTime = System.currentTimeMillis();
+            long endTime = System.currentTimeMillis();
             System.out.println("Execution time: " + (endTime - startTime) + "ms");
 
             var valRes = a.multiply(b);
