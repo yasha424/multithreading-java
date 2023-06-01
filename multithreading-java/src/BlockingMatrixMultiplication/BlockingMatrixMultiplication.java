@@ -16,7 +16,7 @@ public class BlockingMatrixMultiplication {
         MPI.Init(args);
 
         int numTasks = MPI.COMM_WORLD.Size();
-        int numWorkers = numTasks - 1; // 6
+        int numWorkers = numTasks - 1;
         int taskId = MPI.COMM_WORLD.Rank();
 
         if (numTasks < 2) {
