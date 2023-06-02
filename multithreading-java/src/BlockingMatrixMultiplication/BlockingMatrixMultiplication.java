@@ -1,14 +1,14 @@
 package BlockingMatrixMultiplication;
 
-import mpi.*;
+import mpi.MPI;
 import Matrix.Matrix;
 
 public class BlockingMatrixMultiplication {
 
     final static int MASTER = 0;
-    final static int NUM_ROWS_A = 800;
-    final static int NUM_COLS_A = 800;
-    final static int NUM_COLS_B = 800;
+    final static int NUM_ROWS_A = 500;
+    final static int NUM_COLS_A = 500;
+    final static int NUM_COLS_B = 500;
     final static int FROM_MASTER_TAG = 0;
     final static int FROM_WORKER_TAG = 1;
 
@@ -33,8 +33,6 @@ public class BlockingMatrixMultiplication {
         int[] rows = {0};
 
         if (taskId == MASTER) {
-//            a = Matrix.lowerTriangleMatrix(NUM_ROWS_A, NUM_COLS_A, 1);
-//            b = Matrix.lowerTriangleMatrix(NUM_COLS_A, NUM_COLS_B, 1);
             a = Matrix.generateRandomMatrix(NUM_ROWS_A, NUM_COLS_A);
             b = Matrix.generateRandomMatrix(NUM_COLS_A, NUM_COLS_B);
 

@@ -1,6 +1,7 @@
 package NonBlockingMatrixMultiplication;
 
-import mpi.*;
+import mpi.MPI;
+import mpi.Request;
 import Matrix.Matrix;
 
 import java.util.ArrayList;
@@ -8,9 +9,9 @@ import java.util.ArrayList;
 public class NonBlockingMatrixMultiplication {
 
     final static int MASTER = 0;
-    final static int NUM_ROWS_A = 800;
-    final static int NUM_COLS_A = 800;
-    final static int NUM_COLS_B = 800;
+    final static int NUM_ROWS_A = 500;
+    final static int NUM_COLS_A = 500;
+    final static int NUM_COLS_B = 500;
     final static int FROM_MASTER_TAG = 0;
     final static int FROM_WORKER_TAG = 1;
 
@@ -74,8 +75,12 @@ public class NonBlockingMatrixMultiplication {
         } else {
 
             MPI.COMM_WORLD.Irecv(tasksNumRows, taskId - 1, 1, MPI.INT, MASTER, FROM_MASTER_TAG).Wait();
-            MPI.COMM_WORLD.Irecv(a.data, 0, tasksNumRows[taskId - 1], MPI.OBJECT, MASTER, FROM_MASTER_TAG).Wait();
-            MPI.COMM_WORLD.Irecv(b.data, 0, NUM_COLS_A, MPI.OBJECT, MASTER, FROM_MASTER_TAG).Wait();
+
+            Request aReq = MPI.COMM_WORLD.Irecv(a.data, 0, tasksNumRows[taskId - 1], MPI.OBJECT, MASTER, FROM_MASTER_TAG);
+            Request bReq = MPI.COMM_WORLD.Irecv(b.data, 0, NUM_COLS_A, MPI.OBJECT, MASTER, FROM_MASTER_TAG);
+
+            aReq.Wait();
+            bReq.Wait();
 
             for (int i = 0; i < tasksNumRows[taskId - 1]; i++) {
                 for (int j = 0; j < NUM_COLS_B; j++) {

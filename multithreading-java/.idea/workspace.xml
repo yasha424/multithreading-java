@@ -45,14 +45,19 @@
     "project.structure.side.proportion": "0.2"
   }
 }]]></component>
-  <component name="RunManager" selected="Application.BlockingMatrixMultiplication">
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.NonBlockingMatrixMultiplication">
     <configuration name="BlockingMatrixMultiplication" type="Application" factoryName="Application">
       <envs>
         <env name="MPJ_HOME" value="/usr/local/mpj-v0_44" />
       </envs>
       <option name="MAIN_CLASS_NAME" value="BlockingMatrixMultiplication.BlockingMatrixMultiplication" />
       <module name="multithreading-java" />
-      <option name="VM_PARAMETERS" value="-jar $MPJ_HOME$/lib/starter.jar -np 3" />
+      <option name="VM_PARAMETERS" value="-jar $MPJ_HOME$/lib/starter.jar -np 4" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -70,7 +75,7 @@
       </envs>
       <option name="MAIN_CLASS_NAME" value="NonBlockingMatrixMultiplication.NonBlockingMatrixMultiplication" />
       <module name="multithreading-java" />
-      <option name="VM_PARAMETERS" value="-jar $MPJ_HOME$/lib/starter.jar -np 3" />
+      <option name="VM_PARAMETERS" value="-jar $MPJ_HOME$/lib/starter.jar -np 4" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
