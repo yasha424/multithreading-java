@@ -6,9 +6,9 @@ import Matrix.Matrix;
 public class CollectiveMatrixMultiplication {
 
     final static int MASTER = 0;
-    final static int NUM_ROWS_A = 1000;
-    final static int NUM_COLS_A = 1000;
-    final static int NUM_COLS_B = 1000;
+    final static int NUM_ROWS_A = 1500;
+    final static int NUM_COLS_A = 1500;
+    final static int NUM_COLS_B = 1500;
 
     public static void main(String[] args) {
         MPI.Init(args);
@@ -50,23 +50,35 @@ public class CollectiveMatrixMultiplication {
 
         MPI.COMM_WORLD.Bcast(b.data, 0, NUM_COLS_A, MPI.OBJECT, MASTER);
 
+        Matrix cRowsBuffer = new Matrix(numRowsInTasks[taskId], NUM_COLS_B);
+
         for (int i = 0; i < numRowsInTasks[taskId]; i++) {
             for (int j = 0; j < NUM_COLS_B; j++) {
                 for (int k = 0; k < NUM_COLS_A; k++) {
-                    c.data[offsetsInTasks[taskId] + i][j] += aRowsBuffer.data[i][k] * b.data[k][j];
+                    cRowsBuffer.data[i][j] += aRowsBuffer.data[i][k] * b.data[k][j];
                 }
             }
         }
 
-        MPI.COMM_WORLD.Gatherv(
-                c.data,
-                offsetsInTasks[taskId], numRowsInTasks[taskId],
+//        MPI.COMM_WORLD.Gatherv(
+//                cRowsBuffer.data,
+//                0, numRowsInTasks[taskId],
+//                MPI.OBJECT,
+//                c.data,
+//                0, numRowsInTasks, offsetsInTasks,
+//                MPI.OBJECT,
+//                MASTER
+//        );
+
+        MPI.COMM_WORLD.Allgatherv(
+                cRowsBuffer.data,
+                0, numRowsInTasks[taskId],
                 MPI.OBJECT,
                 c.data,
                 0, numRowsInTasks, offsetsInTasks,
-                MPI.OBJECT,
-                MASTER
+                MPI.OBJECT
         );
+
 
         if (taskId == MASTER) {
             long endTime = System.currentTimeMillis();
