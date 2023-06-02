@@ -6,9 +6,9 @@ import Matrix.Matrix;
 public class BlockingMatrixMultiplication {
 
     final static int MASTER = 0;
-    final static int NUM_ROWS_A = 1000;
-    final static int NUM_COLS_A = 1000;
-    final static int NUM_COLS_B = 1000;
+    final static int NUM_ROWS_A = 800;
+    final static int NUM_COLS_A = 800;
+    final static int NUM_COLS_B = 800;
     final static int FROM_MASTER_TAG = 0;
     final static int FROM_WORKER_TAG = 1;
 
@@ -69,20 +69,20 @@ public class BlockingMatrixMultiplication {
         } else {
             MPI.COMM_WORLD.Recv(offset, 0, 1, MPI.INT, MASTER, FROM_MASTER_TAG);
             MPI.COMM_WORLD.Recv(rows, 0, 1, MPI.INT, MASTER, FROM_MASTER_TAG);
-            MPI.COMM_WORLD.Recv(a.data, offset[0], rows[0], MPI.OBJECT, MASTER, FROM_MASTER_TAG);
+            MPI.COMM_WORLD.Recv(a.data, 0, rows[0], MPI.OBJECT, MASTER, FROM_MASTER_TAG);
             MPI.COMM_WORLD.Recv(b.data, 0, NUM_COLS_A, MPI.OBJECT, MASTER, FROM_MASTER_TAG);
 
             for (int i = 0; i < rows[0]; i++) {
                 for (int j = 0; j < NUM_COLS_B; j++) {
                     for (int k = 0; k < NUM_COLS_A; k++) {
-                        c.data[offset[0] + i][j] += a.data[offset[0] + i][k] * b.data[k][j];
+                        c.data[i][j] += a.data[i][k] * b.data[k][j];
                     }
                 }
             }
 
             MPI.COMM_WORLD.Send(offset, 0, 1, MPI.INT, MASTER, FROM_WORKER_TAG);
             MPI.COMM_WORLD.Send(rows, 0, 1, MPI.INT, MASTER, FROM_WORKER_TAG);
-            MPI.COMM_WORLD.Send(c.data, offset[0], rows[0], MPI.OBJECT, MASTER, FROM_WORKER_TAG);
+            MPI.COMM_WORLD.Send(c.data, 0, rows[0], MPI.OBJECT, MASTER, FROM_WORKER_TAG);
         }
 
         MPI.Finalize();
